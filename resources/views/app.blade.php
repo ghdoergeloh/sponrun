@@ -1,0 +1,1 @@
+<!--This blade template needs to replaced by the index.html of the build app. -->

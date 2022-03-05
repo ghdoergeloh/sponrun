@@ -1,1 +1,0 @@
-<input {!! Html::attributes($attributes) !!} value="{{ Form::getValueAttribute($name, $value) }}" readOnly="true"></input>
