@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-require('jquery.easing');
+require('jquery');
 require('fittextjs');
 
 require('startbootstrap-sb-admin/vendor/chart.js/Chart.min.js');
