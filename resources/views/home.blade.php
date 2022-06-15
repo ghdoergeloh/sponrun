@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
 	<div class="media col-md-2 offset-md-1 mt-3 mb-3 d-none d-md-flex">
-		<img class="img-responsive" alt="Logo" src="{{ url('/custom/' . env('CF_LOGO')) }}">
+		<img class="img-fluid" alt="Logo" src="{{ url('/custom/' . env('CF_LOGO')) }}">
 	</div>
 	<div class="col-md-7">
 		<div class="card mb-3">

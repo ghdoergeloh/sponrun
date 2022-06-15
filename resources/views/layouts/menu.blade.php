@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
 	<a class="navbar-brand" href="{{ url('/') }}">
 		@if (env('SHOW_LOGO_IN_MENU'))
-		<img class="img-responsive" alt="Logo" src="{{ url('/custom/' . env('CF_LOGO')) }}" width="30" height="30">
+		<img class="img-fluid" alt="Logo" src="{{ url('/custom/' . env('CF_LOGO')) }}" width="30" height="30">
 		@endif
 		<strong>{{ config('app.name') }}</strong></a>
 	<button class="navbar-toggler navbar-toggler-right" type="button"
