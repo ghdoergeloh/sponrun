@@ -4,6 +4,7 @@
 /storage/*.key
 /vendor/.idea
 /.vagrant
+/mysql/
 Homestead.json
 Homestead.yaml
 npm-debug.log
@@ -13,10 +14,11 @@ yarn-error.log
 .env
 /public/custom
 
-#eclipse
+#IDE
 /.buildpath
 /.project
 /.settings
+/.idea/
 
 
 /vendor/
