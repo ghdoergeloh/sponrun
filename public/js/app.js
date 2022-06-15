@@ -78443,9 +78443,9 @@ __webpack_require__(/*! fittextjs */ "./node_modules/fittextjs/index.js");
 
 __webpack_require__(/*! startbootstrap-sb-admin/vendor/chart.js/Chart.min.js */ "./node_modules/startbootstrap-sb-admin/vendor/chart.js/Chart.min.js");
 
-__webpack_require__(/*! startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.js */ "./node_modules/startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.js");
-
 __webpack_require__(/*! startbootstrap-sb-admin/vendor/datatables/jquery.dataTables.js */ "./node_modules/startbootstrap-sb-admin/vendor/datatables/jquery.dataTables.js");
+
+__webpack_require__(/*! startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.js */ "./node_modules/startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.js");
 
 __webpack_require__(/*! startbootstrap-sb-admin/js/sb-admin.min.js */ "./node_modules/startbootstrap-sb-admin/js/sb-admin.min.js");
 
@@ -78518,90 +78518,89 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-$(document).ready(function () {
+$(function () {
   $(".fittext").fitText();
 
-  if ($('#newsletter_dlg').length) {
-    $('#newsletter_dlg').modal('show');
-    $('#newsletter_dlg').find('form').bind("afterSubmit", function (e) {
-      $('#newsletter_dlg').modal('hide');
+  if ($("#newsletter_dlg").length) {
+    $("#newsletter_dlg").modal("show");
+    $("#newsletter_dlg").find("form").on("afterSubmit", function (e) {
+      $("#newsletter_dlg").modal("hide");
     });
   }
 
-  $('#share-link-button').click(function (event) {
-    var element = $('#share-link');
-    element.select();
-    document.execCommand("copy");
-    $(element).attr('data-title', "Kopiert").tooltip('show');
+  $("#share-link-button").on("click", function (event) {
+    var element = $("#share-link");
+    navigator.clipboard.writeText(element.val());
+    $(element).attr("data-title", "Kopiert").tooltip("show");
   });
-  $('#share-link-button').mouseleave(function (event) {
-    $('#share-link').tooltip('dispose');
+  $("#share-link-button").on("mouseleave", function (event) {
+    $("#share-link").tooltip("dispose");
   });
-  $('form.ajax-submit').submit(function (event) {
+  $("form.ajax-submit").on("submit", function (event) {
     event.preventDefault();
     var form = this;
     var formData = $(form).serialize();
     $.ajax({
-      type: $(form).attr('method'),
-      url: $(form).attr('action'),
-      dataType: 'JSON',
+      type: $(form).attr("method"),
+      url: $(form).attr("action"),
+      dataType: "JSON",
       data: formData
     }).done(function (data) {
-      $(form).trigger('afterSubmit');
+      $(form).trigger("afterSubmit");
     }).fail(function (data) {
       console.log(data);
     });
   });
-  $('.editableLaps').click(function () {
+  $(".editableLaps").on("click", function () {
     if ($(this).children().length == 0) {
       var cell = this;
       var row = $(cell).parent();
       var initialLaps = $(cell).text();
-      $(cell).text('');
-      var div1 = document.createElement('div');
+      $(cell).text("");
+      var div1 = document.createElement("div");
       $(cell).append(div1);
-      $(div1).attr('class', 'input-group');
-      var input = document.createElement('input');
+      $(div1).attr("class", "input-group");
+      var input = document.createElement("input");
       $(div1).append(input);
-      $(input).attr('class', 'form-control');
-      $(input).attr('type', 'number');
-      $(input).attr('value', initialLaps);
-      var div2 = document.createElement('div');
+      $(input).attr("class", "form-control");
+      $(input).attr("type", "number");
+      $(input).attr("value", initialLaps);
+      var div2 = document.createElement("div");
       $(div1).append(div2);
-      $(div2).attr('class', 'input-group-append');
-      var button = document.createElement('button');
+      $(div2).attr("class", "input-group-append");
+      var button = document.createElement("button");
       $(div2).append(button);
-      $(button).attr('class', 'btn btn-outline-secondary');
-      var icon = document.createElement('i');
+      $(button).attr("class", "btn btn-outline-secondary");
+      var icon = document.createElement("i");
       $(button).append(icon);
-      $(icon).attr('class', 'fa fa-save');
-      $(div1).attr('style', 'width: 120px;');
-      $(input).focus();
-      $(input).select();
-      $(input).bind("submit", function (e) {
-        var runPartId = $(row).attr('row_id');
+      $(icon).attr("class", "fa fa-save");
+      $(div1).attr("style", "width: 120px;");
+      $(input).trigger("focus");
+      $(input).trigger("select");
+      $(input).on("submit", function (e) {
+        var runPartId = $(row).attr("row_id");
         var laps = $(input).val();
         var url = indexRunPartURL + "/" + runPartId;
-        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
         var result = $.ajax({
           url: url,
-          type: 'PATCH',
-          dataType: 'JSON',
+          type: "PATCH",
+          dataType: "JSON",
           data: {
             _token: CSRF_TOKEN,
             laps: laps
           }
         }).done(function (data) {
-          $(cell).text(data['laps']);
-          $(row).children('td[name=sum]').text(data['sum'] + " €");
+          $(cell).text(data["laps"]);
+          $(row).children("td[name=sum]").text(data["sum"] + " €");
         }).fail(function (data) {
-          $(input).addClass('is-invalid');
+          $(input).addClass("is-invalid");
         });
       });
-      $(input).bind("exit", function (e) {
+      $(input).on("exit", function (e) {
         $(cell).text(initialLaps);
       });
-      $(input).keyup(function (e) {
+      $(input).on("keyup", function (e) {
         switch (e.keyCode) {
           case 13:
             // Enter
@@ -78614,17 +78613,17 @@ $(document).ready(function () {
             break;
         }
       });
-      $(document).mouseup(function (e) {
+      $(document).on("mouseup", function (e) {
         if (!$(cell).is(e.target) && $(cell).has(e.target).length === 0) {
           $(input).trigger("exit");
         }
       });
-      $(button).click(function (e) {
+      $(button).on("click", function (e) {
         $(input).trigger("submit");
       });
     }
   });
-  $('.dataTable').DataTable();
+  $(".dataTable").DataTable();
 });
 
 /***/ }),
