@@ -6,7 +6,7 @@
 			<div class="card-header">Statistik</div>
 			<div class="card-body">
 				<dl>
-					<dt>Anzahl der Läufer:</dt>
+					<dt>Anzahl der Teilnehmer:</dt>
 					<dd>{{ $sponrun->participants_count }}</dd>
 				</dl>
 				@if ($sponrun->participants_count > 0 && $sponrun->totalLaps() > 0)
@@ -19,14 +19,14 @@
 					<dd>{{ number_format($sponrun->totalDonationSum(),2,',','.') }} €</dd>
 				</dl>
 				<dl>
-					<dt>Läufer mit meisten Runden ({{
+					<dt>Teilnehmer mit meisten Runden ({{
 						$sponrun->participantionsMostLaps()[0]->laps }} Runden):</dt>
 					@foreach ($sponrun->participantionsMostLaps() as $runpart)
 					<dd>{{ $runpart->user->firstname }} {{ $runpart->user->lastname }}</dd>
 					@endforeach
 				</dl>
 				<dl>
-					<dt>Läufer mit meisten Sponsoren ({{
+					<dt>Teilnehmer mit meisten Sponsoren ({{
 						$sponrun->participantionsMostSponsors()[0]->sponsors->count() }}
 						Sponsoren):</dt>
 					@foreach ($sponrun->participantionsMostLaps() as $runpart)
@@ -34,7 +34,7 @@
 					@endforeach
 				</dl>
 				<dl>
-					<dt>Läufer mit größtem Betrag ({{
+					<dt>Teilnehmer mit größtem Betrag ({{
 						number_format($sponrun->participantionsHighestDonation()[0]->calculateDonationSum(),2,',','.')
 						}} €):</dt>
 					@foreach ($sponrun->participantionsHighestDonation() as $runpart)
@@ -42,7 +42,7 @@
 					@endforeach
 				</dl>
 				<dl>
-					<dt>Jüngster Läufer ({{
+					<dt>Jüngster Teilnehmer ({{
 						$sponrun->youngestParticipants()[0]->birthday->format('d.m.Y')
 						}}):</dt>
 					@foreach ($sponrun->youngestParticipants() as $participant)
@@ -50,7 +50,7 @@
 					@endforeach
 				</dl>
 				<dl>
-					<dt>Ältester Läufer ({{
+					<dt>Ältester Teilnehmer ({{
 						$sponrun->oldestParticipants()[0]->birthday->format('d.m.Y') }}):</dt>
 					@foreach ($sponrun->oldestParticipants() as $participant)
 					<dd>{{ $participant->firstname }} {{ $participant->lastname }}</dd>
@@ -60,7 +60,7 @@
 			</div>
 		</div>
 		<div class="card mb-3">
-			<div class="card-header">Läufer</div>
+			<div class="card-header">Teilnehmer</div>
 			<div class="card-body">
 				<div class="table table-responsive">
 					<table
