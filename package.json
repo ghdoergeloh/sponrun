@@ -10,19 +10,19 @@
     "production": "mix --production"
   },
   "devDependencies": {
-    "axios": "^0.27.2",
-    "bootstrap": "^4.2.1",
-    "cross-env": "^5.1",
-    "fittextjs": "^1.2.0",
-    "font-awesome": "^4.7.0",
-    "jquery": "^3.2",
-    "laravel-mix": "^6.0.49",
-    "lodash": "^4.17.11",
-    "popper.js": "^1.14.6",
-    "resolve-url-loader": "^5.0.0",
-    "sass": "^1.52.3",
-    "sass-loader": "^13.0.0",
-    "startbootstrap-sb-admin": "^4.0.0",
-    "webpack": "^5.73.0"
+    "axios": "0.27.2",
+    "bootstrap": "4.6.1",
+    "cross-env": "5.2.1",
+    "fittextjs": "1.2.0",
+    "font-awesome": "4.7.0",
+    "jquery": "3.6.0",
+    "laravel-mix": "6.0.49",
+    "lodash": "4.17.21",
+    "popper.js": "1.16.1",
+    "resolve-url-loader": "5.0.0",
+    "sass": "1.52.3",
+    "sass-loader": "13.0.0",
+    "startbootstrap-sb-admin": "4.0.0",
+    "webpack": "5.73.0"
   }
 }
