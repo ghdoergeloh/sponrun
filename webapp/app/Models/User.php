@@ -2,31 +2,60 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable, HasRoles;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    protected $fillable = [
+        'ext_personnel_no',
+        'firstname',
+        'lastname',
+        'email',
+        'phone',
+        'birthday',
+        'street',
+        'housenumber',
+        'postcode',
+        'city',
+        'gender',
+        'password',
+        'confirmed',
+        'confirmation_code',
+        'wants_newsletter',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'confirmation_code',
+    ];
+
     protected function casts(): array
     {
         return [
+            'birthday'          => 'date',
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'confirmed'         => 'boolean',
+            'wants_newsletter'  => 'boolean',
+            'password'          => 'hashed',
         ];
+    }
+
+    public function runParticipations(): HasMany
+    {
+        return $this->hasMany(RunParticipation::class);
+    }
+
+    public function sponsors(): HasMany
+    {
+        return $this->hasMany(Sponsor::class);
     }
 }
