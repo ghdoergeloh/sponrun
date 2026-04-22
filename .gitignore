@@ -22,3 +22,6 @@ yarn-error.log
 
 
 /vendor/
+
+# New webapp (Laravel 13) - tracked on claude/* branches, not on seed/* branches
+/webapp/
