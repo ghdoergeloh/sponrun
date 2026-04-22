@@ -117,6 +117,7 @@
         "donation_per_lap": "Donation per lap (€)",
         "donation_static_max": "Maximum / fixed amount (€)",
         "donation_static_max_hint": "Leave empty or 0 for no maximum",
+        "donation_preview": "Estimated donation for {{laps}} laps",
         "total": "Total",
         "public_intro": "I want to sponsor {{name}}",
         "public_intro_project": " (running for: {{project}})",

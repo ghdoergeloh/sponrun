@@ -67,6 +67,9 @@ export default function AdminSponsoredRunsIndex({ sponruns }: Props) {
                                         <Link href={route('admin.sponrun.show', run.id)} className="text-indigo-600 hover:underline text-xs">
                                             {t('run.statistics')}
                                         </Link>
+                                        <a href={route('admin.sponrun.evaluation', run.id)} className="text-green-700 hover:underline text-xs">
+                                            ↓ {t('run.evaluation')}
+                                        </a>
                                         <Link href={route('admin.sponrun.edit', run.id)} className="text-indigo-600 hover:underline text-xs">
                                             {t('common.edit')}
                                         </Link>

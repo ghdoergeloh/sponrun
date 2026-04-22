@@ -117,6 +117,7 @@
         "donation_per_lap": "Spende pro Runde (€)",
         "donation_static_max": "Maximal- oder Festbetrag (€)",
         "donation_static_max_hint": "Leer lassen oder 0 für kein Maximum",
+        "donation_preview": "Voraussichtliche Spende bei {{laps}} Runden",
         "total": "Endbetrag",
         "public_intro": "Ich möchte Sponsor für {{name}} sein",
         "public_intro_project": " (läuft für: {{project}})",

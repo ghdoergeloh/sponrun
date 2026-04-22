@@ -22,7 +22,10 @@ class RunParticipation extends Model
     {
         static::creating(function (RunParticipation $rp) {
             if (empty($rp->hash)) {
-                $rp->hash = Str::md5(microtime() . $rp->user_id . $rp->sponsored_run_id);
+                do {
+                    $hash = Str::random(32);
+                } while (static::where('hash', $hash)->exists());
+                $rp->hash = $hash;
             }
         });
     }

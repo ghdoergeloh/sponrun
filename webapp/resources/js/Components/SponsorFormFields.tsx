@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { calcDonation, fmt } from '@/Components/DonationCalculator';
 
 interface Props {
     data: Record<string, string | boolean | number | null | undefined>;
@@ -6,10 +7,16 @@ interface Props {
     errors: Partial<Record<string, string>>;
     showPersonnelNo?: boolean;
     newsletterOptional?: boolean;
+    previewLaps?: number;
 }
 
-export default function SponsorFormFields({ data, setData, errors, showPersonnelNo = false, newsletterOptional = false }: Props) {
+export default function SponsorFormFields({ data, setData, errors, showPersonnelNo = false, newsletterOptional = false, previewLaps = 20 }: Props) {
     const { t } = useTranslation();
+
+    const perLap = parseFloat(String(data.donation_per_lap ?? '0').replace(',', '.')) || 0;
+    const staticMax = parseFloat(String(data.donation_static_max ?? '0').replace(',', '.')) || 0;
+    const preview = calcDonation(perLap, staticMax, previewLaps);
+    const hasDonation = perLap > 0 || staticMax > 0;
 
     const inp = (name: string, label: string, type = 'text', req = false) => (
         <div key={name}>
@@ -66,6 +73,12 @@ export default function SponsorFormFields({ data, setData, errors, showPersonnel
                     {errors.donation_static_max && <p className="text-red-500 text-xs mt-1">{errors.donation_static_max}</p>}
                 </div>
             </div>
+            {hasDonation && (
+                <div className="bg-indigo-50 border border-indigo-200 rounded px-3 py-2 text-sm">
+                    <span className="text-gray-700">{t('sponsor.donation_preview', { laps: previewLaps })}: </span>
+                    <span className="font-semibold text-indigo-700">{fmt(preview)}</span>
+                </div>
+            )}
             {newsletterOptional && (
                 <label className="flex items-center gap-2 text-sm">
                     <input

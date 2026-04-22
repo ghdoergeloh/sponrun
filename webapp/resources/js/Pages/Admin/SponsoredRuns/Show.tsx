@@ -57,12 +57,12 @@ export default function AdminSponsoredRunShow({ sponrun, runParticipations }: Pr
                 </Link>
                 <h1 className="text-xl font-bold">{sponrun.name}</h1>
                 <div className="ml-auto flex gap-2">
-                    <Link
+                    <a
                         href={route('admin.sponrun.evaluation', sponrun.id)}
                         className="bg-green-600 text-white text-xs px-3 py-2 rounded hover:bg-green-700"
                     >
                         ↓ {t('run.evaluation')}
-                    </Link>
+                    </a>
                     <Link
                         href={route('admin.sponrun.edit', sponrun.id)}
                         className="bg-indigo-600 text-white text-xs px-3 py-2 rounded hover:bg-indigo-700"

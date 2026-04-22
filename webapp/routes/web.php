@@ -17,8 +17,12 @@ use Illuminate\Support\Facades\Route;
 Route::bind('hash', fn ($value) => RunParticipation::where('hash', $value)->firstOrFail());
 
 // ── Public (no auth) ──────────────────────────────────────────────────────────
-Route::get('run/{hash}', [PublicSponsorController::class, 'create'])->name('run.sponsor.create');
-Route::post('run/{hash}/sponsor', [PublicSponsorController::class, 'store'])->name('run.sponsor.store');
+Route::get('run/{hash}', [PublicSponsorController::class, 'create'])
+    ->middleware('throttle:30,1')
+    ->name('run.sponsor.create');
+Route::post('run/{hash}/sponsor', [PublicSponsorController::class, 'store'])
+    ->middleware('throttle:10,1')
+    ->name('run.sponsor.store');
 
 // ── Authenticated ─────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'verified'])->group(function () {

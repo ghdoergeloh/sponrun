@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreSponsorRequest;
 use App\Models\RunParticipation;
 use App\Models\Sponsor;
 use App\Models\SponsoredRun;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,12 +22,14 @@ class AdminSponsorController extends Controller
         ]);
     }
 
-    public function store(Request $request, SponsoredRun $sponrun, RunParticipation $runpart): RedirectResponse
+    public function store(StoreSponsorRequest $request, SponsoredRun $sponrun, RunParticipation $runpart): RedirectResponse
     {
-        $runpart->sponsors()->create(array_merge(
-            $this->validated($request),
-            ['user_id' => $runpart->user_id]
-        ));
+        DB::transaction(function () use ($request, $runpart) {
+            $runpart->sponsors()->create(array_merge(
+                $request->validated(),
+                ['user_id' => $runpart->user_id]
+            ));
+        });
 
         return redirect()->route('admin.sponrun.runpart.edit', [$sponrun, $runpart])->with('success', 'Sponsor hinzugefügt.');
     }
@@ -40,9 +43,9 @@ class AdminSponsorController extends Controller
         ]);
     }
 
-    public function update(Request $request, SponsoredRun $sponrun, RunParticipation $runpart, Sponsor $sponsor): RedirectResponse
+    public function update(StoreSponsorRequest $request, SponsoredRun $sponrun, RunParticipation $runpart, Sponsor $sponsor): RedirectResponse
     {
-        $sponsor->update($this->validated($request));
+        $sponsor->update($request->validated());
 
         return redirect()->route('admin.sponrun.runpart.edit', [$sponrun, $runpart])->with('success', 'Gespeichert.');
     }
@@ -52,23 +55,5 @@ class AdminSponsorController extends Controller
         $sponsor->delete();
 
         return redirect()->route('admin.sponrun.runpart.edit', [$sponrun, $runpart])->with('success', 'Sponsor gelöscht.');
-    }
-
-    private function validated(Request $request): array
-    {
-        return $request->validate([
-            'firstname'           => 'required|string|max:255',
-            'lastname'            => 'required|string|max:255',
-            'street'              => 'required|string|max:255',
-            'housenumber'         => 'required|string|max:31',
-            'postcode'            => 'required|string|size:5',
-            'city'                => 'required|string|max:255',
-            'phone'               => 'nullable|string|max:255',
-            'email'               => 'nullable|email|max:255',
-            'donation_per_lap'    => ['nullable', 'required_without:donation_static_max', 'regex:/^\d+[,.]?\d{0,2}$/'],
-            'donation_static_max' => ['nullable', 'required_without:donation_per_lap', 'regex:/^\d+[,.]?\d{0,2}$/'],
-            'wants_newsletter'    => 'nullable|boolean',
-            'ext_personnel_no'    => 'nullable|integer',
-        ]);
     }
 }
