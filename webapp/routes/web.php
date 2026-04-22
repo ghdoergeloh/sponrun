@@ -11,22 +11,32 @@ use App\Http\Controllers\PublicSponsorController;
 use App\Http\Controllers\RunParticipationController;
 use App\Http\Controllers\SponsorController;
 use App\Models\RunParticipation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-// Bind {hash} route parameter to RunParticipation
-Route::bind('hash', fn ($value) => RunParticipation::where('hash', $value)->firstOrFail());
+$resolveRunHash = fn ($value) => RunParticipation::where('hash', $value)->firstOrFail();
 
 // ── Public (no auth) ──────────────────────────────────────────────────────────
-Route::get('run/{hash}', [PublicSponsorController::class, 'create'])
+Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+    return Inertia::render('Welcome');
+})->name('welcome');
+
+Route::get('run/{runHash}', [PublicSponsorController::class, 'create'])
     ->middleware('throttle:30,1')
     ->name('run.sponsor.create');
-Route::post('run/{hash}/sponsor', [PublicSponsorController::class, 'store'])
+Route::post('run/{runHash}/sponsor', [PublicSponsorController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('run.sponsor.store');
 
+Route::bind('runHash', $resolveRunHash);
+
 // ── Authenticated ─────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     // Account
     Route::get('account/edit', [AccountController::class, 'edit'])->name('account.edit');

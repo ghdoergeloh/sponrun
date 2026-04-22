@@ -12,9 +12,9 @@ use Inertia\Response;
 
 class PublicSponsorController extends Controller
 {
-    public function create(RunParticipation $hash): Response|RedirectResponse
+    public function create(RunParticipation $runHash): Response|RedirectResponse
     {
-        $runpart = $hash;
+        $runpart = $runHash;
         abort_if($runpart->sponsoredRun->isElapsed(), 404);
 
         return Inertia::render('Sponsors/PublicCreate', [
@@ -28,9 +28,9 @@ class PublicSponsorController extends Controller
         ]);
     }
 
-    public function store(StoreSponsorRequest $request, RunParticipation $hash): RedirectResponse
+    public function store(StoreSponsorRequest $request, RunParticipation $runHash): RedirectResponse
     {
-        $runpart = $hash;
+        $runpart = $runHash;
         abort_if($runpart->sponsoredRun->isElapsed(), 404);
 
         $data = $request->validated();
