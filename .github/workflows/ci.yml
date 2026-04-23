@@ -1,0 +1,175 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'webapp/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    paths:
+      - 'webapp/**'
+      - '.github/workflows/ci.yml'
+
+defaults:
+  run:
+    working-directory: webapp
+
+jobs:
+  # ── PHP Tests ────────────────────────────────────────────────────────────
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_sqlite, sqlite3, mbstring, zip, gd, intl, bcmath, exif
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: webapp/vendor
+          key: composer-${{ hashFiles('webapp/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install Node dependencies
+        run: npm ci --no-audit
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Prepare test environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run database migrations
+        run: php artisan migrate --force
+
+      - name: Run test suite
+        run: php artisan test --stop-on-failure
+
+  # ── PHP Code Style ───────────────────────────────────────────────────────
+  pint:
+    name: Code Style (Pint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: webapp/vendor
+          key: composer-${{ hashFiles('webapp/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Check code style
+        run: vendor/bin/pint --test
+
+  # ── TypeScript ───────────────────────────────────────────────────────────
+  typecheck:
+    name: TypeScript
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install Node dependencies
+        run: npm ci --no-audit
+
+      - name: TypeScript type check
+        run: npx tsc --noEmit
+
+  # ── Frontend Build ───────────────────────────────────────────────────────
+  build:
+    name: Frontend Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install Node dependencies
+        run: npm ci --no-audit
+
+      - name: Build production assets
+        run: npm run build
+
+      - name: Verify build output
+        run: test -f public/build/manifest.json
+
+  # ── Security Audit ───────────────────────────────────────────────────────
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: webapp/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci --no-audit
+
+      - name: PHP dependency audit
+        run: composer audit
+
+      - name: npm dependency audit
+        run: npm audit --audit-level=high
+        # npm audit reports many transitive dev warnings — treat as non-blocking
+        continue-on-error: true
