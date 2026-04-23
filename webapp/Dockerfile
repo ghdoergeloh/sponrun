@@ -11,7 +11,7 @@ COPY public/ public/
 RUN npm run build
 
 # ── Stage 2: Production runtime ─────────────────────────────────────────────
-FROM php:8.3-apache
+FROM php:8.4-apache
 
 # System libs + PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
