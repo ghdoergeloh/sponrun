@@ -38,8 +38,8 @@ class ProjectlistController extends Controller
         $assignedIds = $projectlist->projects->pluck('id');
 
         return Inertia::render('Admin/Projectlists/Edit', [
-            'projectlist'       => $projectlist,
-            'assignedProjects'  => $projectlist->projects,
+            'projectlist' => $projectlist,
+            'assignedProjects' => $projectlist->projects,
             'availableProjects' => Project::whereNotIn('id', $assignedIds)->orderBy('name')->get(),
         ]);
     }

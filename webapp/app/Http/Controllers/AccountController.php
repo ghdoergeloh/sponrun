@@ -20,15 +20,15 @@ class AccountController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $data = Validator::make($request->all(), [
-            'firstname'        => 'required|string|max:255',
-            'lastname'         => 'required|string|max:255',
-            'phone'            => 'nullable|string|max:255',
-            'birthday'         => 'required|date',
-            'street'           => 'required|string|max:255',
-            'housenumber'      => 'required|string|max:31',
-            'postcode'         => 'required|string|size:5',
-            'city'             => 'required|string|max:255',
-            'gender'           => 'required|in:m,f',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'birthday' => 'required|date',
+            'street' => 'required|string|max:255',
+            'housenumber' => 'required|string|max:31',
+            'postcode' => 'required|string|size:5',
+            'city' => 'required|string|max:255',
+            'gender' => 'required|in:m,f',
             'wants_newsletter' => 'nullable|boolean',
         ])->validate();
 

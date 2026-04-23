@@ -16,6 +16,7 @@ class SponsorController extends Controller
     public function create(RunParticipation $runpart): Response
     {
         Gate::authorize('view', $runpart);
+
         return Inertia::render('Sponsors/Create', ['runpart' => $runpart]);
     }
 
@@ -37,6 +38,7 @@ class SponsorController extends Controller
     public function edit(RunParticipation $runpart, Sponsor $sponsor): Response
     {
         Gate::authorize('view', $runpart);
+
         return Inertia::render('Sponsors/Edit', ['runpart' => $runpart, 'sponsor' => $sponsor]);
     }
 

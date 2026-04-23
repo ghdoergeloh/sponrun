@@ -5,9 +5,9 @@ namespace App\Exports;
 use App\Models\RunParticipation;
 use App\Models\Sponsor;
 use App\Models\SponsoredRun;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Illuminate\Support\Collection;
 
 class RunEvaluationExport implements FromCollection, WithHeadings
 {
@@ -65,7 +65,7 @@ class RunEvaluationExport implements FromCollection, WithHeadings
     private function buildRow(RunParticipation $runpart, Sponsor $sponsor): array
     {
         $user = $runpart->user;
-        $row  = [
+        $row = [
             $user->id,
             (string) $runpart->project_id,
         ];
@@ -75,8 +75,8 @@ class RunEvaluationExport implements FromCollection, WithHeadings
         }
 
         $row[] = (int) $user->ext_personnel_no;
-        $row[] = $user->lastname . ', ' . $user->firstname;
-        $row[] = $user->street . ' ' . $user->housenumber;
+        $row[] = $user->lastname.', '.$user->firstname;
+        $row[] = $user->street.' '.$user->housenumber;
         $row[] = $user->postcode;
         $row[] = $user->city;
         $row[] = $user->email;
@@ -88,8 +88,8 @@ class RunEvaluationExport implements FromCollection, WithHeadings
 
         $row[] = $sponsor->id;
         $row[] = (int) $sponsor->ext_personnel_no;
-        $row[] = $sponsor->lastname . ', ' . $sponsor->firstname;
-        $row[] = $sponsor->street . ' ' . $sponsor->housenumber;
+        $row[] = $sponsor->lastname.', '.$sponsor->firstname;
+        $row[] = $sponsor->street.' '.$sponsor->housenumber;
         $row[] = $sponsor->postcode;
         $row[] = $sponsor->city;
         $row[] = $sponsor->email ?? '';
@@ -99,7 +99,7 @@ class RunEvaluationExport implements FromCollection, WithHeadings
             $row[] = $sponsor->wants_newsletter ? 'Ja' : 'Nein';
         }
 
-        $row[] = $user->lastname . ', ' . $user->firstname;
+        $row[] = $user->lastname.', '.$user->firstname;
         $row[] = number_format((float) $sponsor->donation_per_lap, 2, ',', '');
         $row[] = number_format((float) $sponsor->donation_static_max, 2, ',', '');
         $row[] = $runpart->laps;

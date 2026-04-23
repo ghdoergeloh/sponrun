@@ -31,13 +31,6 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-          cache-dependency-path: webapp/package-lock.json
-
       - name: Cache Composer dependencies
         uses: actions/cache@v4
         with:
@@ -48,18 +41,13 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Install Node dependencies
-        run: npm ci --no-audit
-
-      - name: Build frontend assets
-        run: npm run build
-
       - name: Prepare test environment
         run: |
           cp .env.example .env
           php artisan key:generate
+          touch database/database.sqlite
 
-      - name: Run database migrations
+      - name: Verify migrations run cleanly
         run: php artisan migrate --force
 
       - name: Run test suite

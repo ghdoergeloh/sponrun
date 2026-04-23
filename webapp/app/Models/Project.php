@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Project extends Model
 {
     public $incrementing = false;
+
     protected $keyType = 'int';
 
     protected $fillable = ['id', 'name', 'scope'];
@@ -21,9 +22,9 @@ class Project extends Model
     public function getNameWithScopeAttribute(): string
     {
         return match ($this->scope) {
-            'project' => $this->name . ' (Projekt)',
-            'person'  => $this->name . ' (Person)',
-            default   => $this->name,
+            'project' => $this->name.' (Projekt)',
+            'person' => $this->name.' (Person)',
+            default => $this->name,
         };
     }
 }

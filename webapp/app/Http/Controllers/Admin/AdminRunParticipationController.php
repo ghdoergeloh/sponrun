@@ -17,18 +17,18 @@ class AdminRunParticipationController extends Controller
         $runpart->load(['user', 'project', 'sponsors']);
 
         return Inertia::render('Admin/RunParticipations/Edit', [
-            'sponrun'    => $sponrun,
-            'runpart'    => array_merge($runpart->toArray(), ['share_link' => $runpart->share_link]),
-            'projects'   => $sponrun->getProjectSelection(),
-            'donationSum'=> $runpart->calculateDonationSum(),
+            'sponrun' => $sponrun,
+            'runpart' => array_merge($runpart->toArray(), ['share_link' => $runpart->share_link]),
+            'projects' => $sponrun->getProjectSelection(),
+            'donationSum' => $runpart->calculateDonationSum(),
         ]);
     }
 
     public function update(Request $request, SponsoredRun $sponrun, RunParticipation $runpart): RedirectResponse
     {
         $data = $request->validate([
-            'laps'        => 'integer|min:0',
-            'project_id'  => 'nullable|exists:projects,id',
+            'laps' => 'integer|min:0',
+            'project_id' => 'nullable|exists:projects,id',
             'tshirt_size' => 'nullable|in:XS,S,M,L,XL,XXL',
         ]);
 
@@ -40,6 +40,7 @@ class AdminRunParticipationController extends Controller
     public function destroy(SponsoredRun $sponrun, RunParticipation $runpart): RedirectResponse
     {
         $runpart->delete();
+
         return redirect()->route('admin.sponrun.show', $sponrun)->with('success', 'Teilnahme gelöscht.');
     }
 }

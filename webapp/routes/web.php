@@ -22,6 +22,7 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard');
     }
+
     return Inertia::render('Welcome');
 })->name('welcome');
 
@@ -103,4 +104,4 @@ Route::middleware(['auth', 'verified', 'role:admin'])
         Route::patch('projectlist/{projectlist}/projects/remove', [ProjectlistController::class, 'removeProjects'])->name('projectlist.removeProjects');
     });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

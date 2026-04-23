@@ -52,12 +52,13 @@ class RunParticipation extends Model
 
     public function getShareLinkAttribute(): string
     {
-        return url('run') . '/' . $this->hash;
+        return url('run').'/'.$this->hash;
     }
 
     public function calculateDonationSum(?int $laps = null): float
     {
         $laps ??= $this->laps;
+
         return $this->sponsors->sum(fn (Sponsor $s) => $s->calculateDonationSum($laps));
     }
 }

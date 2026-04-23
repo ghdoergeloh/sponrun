@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -18,10 +17,10 @@ class SponsoredRun extends Model
     protected function casts(): array
     {
         return [
-            'begin'      => 'datetime',
-            'end'        => 'datetime',
-            'closed'     => 'boolean',
-            'with_tshirt'=> 'boolean',
+            'begin' => 'datetime',
+            'end' => 'datetime',
+            'closed' => 'boolean',
+            'with_tshirt' => 'boolean',
         ];
     }
 
@@ -54,6 +53,7 @@ class SponsoredRun extends Model
             $selection = $projectlist->getProjectSelection() + $selection;
         }
         asort($selection);
+
         return $selection;
     }
 
@@ -70,6 +70,7 @@ class SponsoredRun extends Model
     public function participantionsMostLaps(): Collection
     {
         $max = $this->runParticipations->max('laps') ?? 0;
+
         return $this->runParticipations->where('laps', $max)->values();
     }
 
@@ -77,12 +78,14 @@ class SponsoredRun extends Model
     {
         $loaded = $this->runParticipations->loadMissing('sponsors');
         $max = $loaded->max(fn ($rp) => $rp->sponsors->count()) ?? 0;
+
         return $loaded->filter(fn ($rp) => $rp->sponsors->count() === $max)->values();
     }
 
     public function participantionsHighestDonation(): Collection
     {
         $max = $this->runParticipations->max(fn ($rp) => $rp->calculateDonationSum()) ?? 0.0;
+
         return $this->runParticipations->filter(fn ($rp) => $rp->calculateDonationSum() == $max)->values();
     }
 
@@ -90,12 +93,14 @@ class SponsoredRun extends Model
     {
         $this->participants->loadMissing([]);
         $min = $this->participants->min(fn ($u) => $u->birthday?->timestamp);
+
         return $this->participants->filter(fn ($u) => $u->birthday?->timestamp === $min)->values();
     }
 
     public function youngestParticipants(): Collection
     {
         $max = $this->participants->max(fn ($u) => $u->birthday?->timestamp);
+
         return $this->participants->filter(fn ($u) => $u->birthday?->timestamp === $max)->values();
     }
 }

@@ -19,10 +19,10 @@ class PublicSponsorController extends Controller
 
         return Inertia::render('Sponsors/PublicCreate', [
             'runpart' => [
-                'hash'    => $runpart->hash,
-                'runner'  => $runpart->user->firstname . ' ' . $runpart->user->lastname,
+                'hash' => $runpart->hash,
+                'runner' => $runpart->user->firstname.' '.$runpart->user->lastname,
                 'project' => $runpart->project?->name,
-                'run'     => $runpart->sponsoredRun->name,
+                'run' => $runpart->sponsoredRun->name,
             ],
             'newsletterOptional' => (bool) config('app.newsletter_optional', false),
         ]);
@@ -40,7 +40,7 @@ class PublicSponsorController extends Controller
         });
 
         $runpart->user->notify(new NewSponsorNotification(
-            $data['firstname'] . ' ' . $data['lastname'],
+            $data['firstname'].' '.$data['lastname'],
             (float) str_replace(',', '.', $data['donation_per_lap'] ?? '0'),
             (float) str_replace(',', '.', $data['donation_static_max'] ?? '0'),
         ));

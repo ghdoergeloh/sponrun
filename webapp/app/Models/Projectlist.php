@@ -27,6 +27,7 @@ class Projectlist extends Model
         foreach ($this->projects as $project) {
             $selection[$project->id] = $project->name_with_scope;
         }
+
         return $selection;
     }
 }

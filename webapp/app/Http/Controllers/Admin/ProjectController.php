@@ -26,8 +26,8 @@ class ProjectController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'id'    => 'required|integer|unique:projects,id',
-            'name'  => 'required|string|max:255',
+            'id' => 'required|integer|unique:projects,id',
+            'name' => 'required|string|max:255',
             'scope' => 'required|in:person,project',
         ]);
 
@@ -44,7 +44,7 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project): RedirectResponse
     {
         $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'scope' => 'required|in:person,project',
         ]);
 

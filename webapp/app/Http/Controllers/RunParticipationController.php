@@ -23,7 +23,7 @@ class RunParticipationController extends Controller
             ->get()
             ->map(fn ($rp) => array_merge($rp->toArray(), [
                 'donation_sum' => $rp->calculateDonationSum(),
-                'share_link'   => $rp->share_link,
+                'share_link' => $rp->share_link,
             ]));
 
         return Inertia::render('RunParticipations/Index', [
@@ -46,9 +46,9 @@ class RunParticipationController extends Controller
         abort_if($already, 422, 'Du nimmst bereits an diesem Lauf teil.');
 
         $rp = RunParticipation::create([
-            'user_id'         => $request->user()->id,
-            'sponsored_run_id'=> $run->id,
-            'laps'            => 0,
+            'user_id' => $request->user()->id,
+            'sponsored_run_id' => $run->id,
+            'laps' => 0,
         ]);
 
         return redirect()->route('runpart.edit', $rp)->with('success', 'Erfolgreich angemeldet.');
@@ -60,8 +60,8 @@ class RunParticipationController extends Controller
         $runpart->load(['sponsoredRun', 'project', 'sponsors']);
 
         return Inertia::render('RunParticipations/Show', [
-            'runpart'    => array_merge($runpart->toArray(), ['share_link' => $runpart->share_link]),
-            'donationSum'=> $runpart->calculateDonationSum(),
+            'runpart' => array_merge($runpart->toArray(), ['share_link' => $runpart->share_link]),
+            'donationSum' => $runpart->calculateDonationSum(),
         ]);
     }
 
@@ -71,9 +71,9 @@ class RunParticipationController extends Controller
         $runpart->load(['sponsoredRun', 'project', 'sponsors']);
 
         return Inertia::render('RunParticipations/Edit', [
-            'runpart'    => array_merge($runpart->toArray(), ['share_link' => $runpart->share_link]),
-            'projects'   => $runpart->sponsoredRun->getProjectSelection(),
-            'donationSum'=> $runpart->calculateDonationSum(),
+            'runpart' => array_merge($runpart->toArray(), ['share_link' => $runpart->share_link]),
+            'projects' => $runpart->sponsoredRun->getProjectSelection(),
+            'donationSum' => $runpart->calculateDonationSum(),
         ]);
     }
 
@@ -83,9 +83,9 @@ class RunParticipationController extends Controller
         abort_if($runpart->sponsoredRun->isElapsed(), 403, 'Dieser Lauf ist geschlossen.');
 
         $data = $request->validate([
-            'laps'       => 'integer|min:0',
+            'laps' => 'integer|min:0',
             'project_id' => 'nullable|exists:projects,id',
-            'tshirt_size'=> 'nullable|in:XS,S,M,L,XL,XXL',
+            'tshirt_size' => 'nullable|in:XS,S,M,L,XL,XXL',
         ]);
 
         $runpart->update($data);

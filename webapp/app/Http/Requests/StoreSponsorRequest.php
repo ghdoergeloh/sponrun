@@ -16,18 +16,18 @@ class StoreSponsorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname'           => 'required|string|max:255',
-            'lastname'            => 'required|string|max:255',
-            'street'              => 'required|string|max:255',
-            'housenumber'         => 'required|string|max:31',
-            'postcode'            => 'required|string|size:5',
-            'city'                => 'required|string|max:255',
-            'phone'               => 'nullable|string|max:255',
-            'email'               => 'nullable|email|max:255',
-            'donation_per_lap'    => ['nullable', 'regex:/^\d+[,.]?\d{0,2}$/', $this->donationAmountRule()],
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'street' => 'required|string|max:255',
+            'housenumber' => 'required|string|max:31',
+            'postcode' => 'required|string|size:5',
+            'city' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'donation_per_lap' => ['nullable', 'regex:/^\d+[,.]?\d{0,2}$/', $this->donationAmountRule()],
             'donation_static_max' => ['nullable', 'regex:/^\d+[,.]?\d{0,2}$/', $this->donationAmountRule()],
-            'wants_newsletter'    => 'nullable|boolean',
-            'ext_personnel_no'    => 'nullable|integer',
+            'wants_newsletter' => 'nullable|boolean',
+            'ext_personnel_no' => 'nullable|integer',
         ];
     }
 
@@ -44,7 +44,7 @@ class StoreSponsorRequest extends FormRequest
         {
             public function validate(string $attribute, mixed $value, Closure $fail): void
             {
-                $perLap  = (float) str_replace(',', '.', (string) request('donation_per_lap', '0'));
+                $perLap = (float) str_replace(',', '.', (string) request('donation_per_lap', '0'));
                 $staticMax = (float) str_replace(',', '.', (string) request('donation_static_max', '0'));
 
                 if ($perLap <= 0 && $staticMax <= 0) {

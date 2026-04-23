@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,8 +12,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, HasRoles, Notifiable;
 
     protected $fillable = [
         'ext_personnel_no',
@@ -41,11 +42,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected function casts(): array
     {
         return [
-            'birthday'          => 'date',
+            'birthday' => 'date',
             'email_verified_at' => 'datetime',
-            'confirmed'         => 'boolean',
-            'wants_newsletter'  => 'boolean',
-            'password'          => 'hashed',
+            'confirmed' => 'boolean',
+            'wants_newsletter' => 'boolean',
+            'password' => 'hashed',
         ];
     }
 

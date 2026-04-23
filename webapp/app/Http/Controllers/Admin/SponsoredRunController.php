@@ -41,13 +41,13 @@ class SponsoredRunController extends Controller
 
         return Inertia::render('Admin/SponsoredRuns/Show', [
             'sponrun' => array_merge($sponrun->toArray(), [
-                'total_laps'               => $sponrun->totalLaps(),
-                'total_donation_sum'       => $sponrun->totalDonationSum(),
-                'most_laps_runners'        => $sponrun->participantionsMostLaps(),
-                'most_sponsors_runners'    => $sponrun->participantionsMostSponsors(),
+                'total_laps' => $sponrun->totalLaps(),
+                'total_donation_sum' => $sponrun->totalDonationSum(),
+                'most_laps_runners' => $sponrun->participantionsMostLaps(),
+                'most_sponsors_runners' => $sponrun->participantionsMostSponsors(),
                 'highest_donation_runners' => $sponrun->participantionsHighestDonation(),
-                'oldest_participants'      => $sponrun->oldestParticipants(),
-                'youngest_participants'    => $sponrun->youngestParticipants(),
+                'oldest_participants' => $sponrun->oldestParticipants(),
+                'youngest_participants' => $sponrun->youngestParticipants(),
             ]),
             'runParticipations' => $sponrun->runParticipations->map(fn ($rp) => array_merge(
                 $rp->toArray(),
@@ -62,8 +62,8 @@ class SponsoredRunController extends Controller
         $assignedIds = $sponrun->projectlists->pluck('id');
 
         return Inertia::render('Admin/SponsoredRuns/Edit', [
-            'sponrun'            => $sponrun,
-            'assignedProjectlists'  => $sponrun->projectlists,
+            'sponrun' => $sponrun,
+            'assignedProjectlists' => $sponrun->projectlists,
             'availableProjectlists' => Projectlist::whereNotIn('id', $assignedIds)->get(),
         ]);
     }
@@ -78,18 +78,21 @@ class SponsoredRunController extends Controller
     public function destroy(SponsoredRun $sponrun): RedirectResponse
     {
         $sponrun->delete();
+
         return redirect()->route('admin.sponrun.index')->with('success', 'Sponsorenlauf gelöscht.');
     }
 
     public function close(SponsoredRun $sponrun): RedirectResponse
     {
         $sponrun->update(['closed' => true]);
+
         return redirect()->back()->with('success', 'Lauf gesperrt.');
     }
 
     public function reopen(SponsoredRun $sponrun): RedirectResponse
     {
         $sponrun->update(['closed' => false]);
+
         return redirect()->back()->with('success', 'Lauf wieder geöffnet.');
     }
 
@@ -113,21 +116,21 @@ class SponsoredRunController extends Controller
     {
         return Excel::download(
             new RunEvaluationExport($sponrun),
-            'Auswertung ' . $sponrun->name . '.xlsx'
+            'Auswertung '.$sponrun->name.'.xlsx'
         );
     }
 
     private function validated(Request $request): array
     {
         return $request->validate([
-            'name'        => 'required|string|max:255',
-            'begin'       => 'required|date',
-            'end'         => 'required|date',
+            'name' => 'required|string|max:255',
+            'begin' => 'required|date',
+            'end' => 'required|date',
             'with_tshirt' => 'required|boolean',
-            'street'      => 'nullable|string|max:255',
+            'street' => 'nullable|string|max:255',
             'housenumber' => 'nullable|string|max:31',
-            'postcode'    => 'nullable|string|max:5',
-            'city'        => 'nullable|string|max:255',
+            'postcode' => 'nullable|string|max:5',
+            'city' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
         ]);
     }

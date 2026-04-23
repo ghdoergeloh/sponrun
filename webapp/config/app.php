@@ -123,8 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    'newsletter_optional'   => env('NEWSLETTER_OPTIONAL', false),
-    'url_impressum'         => env('URL_IMPRESSUM', ''),
+    'newsletter_optional' => env('NEWSLETTER_OPTIONAL', false),
+    'url_impressum' => env('URL_IMPRESSUM', ''),
     'url_privacy_statement' => env('URL_PRIVACY_STATEMENT', ''),
 
 ];

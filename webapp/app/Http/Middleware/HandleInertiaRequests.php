@@ -22,22 +22,22 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $user ? [
-                    'id'               => $user->id,
-                    'firstname'        => $user->firstname,
-                    'lastname'         => $user->lastname,
-                    'email'            => $user->email,
-                    'isAdmin'          => $user->hasRole('admin'),
+                    'id' => $user->id,
+                    'firstname' => $user->firstname,
+                    'lastname' => $user->lastname,
+                    'email' => $user->email,
+                    'isAdmin' => $user->hasRole('admin'),
                     'wants_newsletter' => $user->wants_newsletter,
                 ] : null,
             ],
             'flash' => [
                 'success' => session('success'),
-                'error'   => session('error'),
+                'error' => session('error'),
             ],
-            'appName'            => config('app.name'),
+            'appName' => config('app.name'),
             'newsletterOptional' => (bool) config('app.newsletter_optional', false),
-            'urlImpressum'       => config('app.url_impressum'),
-            'urlPrivacy'         => config('app.url_privacy_statement'),
+            'urlImpressum' => config('app.url_impressum'),
+            'urlPrivacy' => config('app.url_privacy_statement'),
         ];
     }
 }

@@ -22,7 +22,7 @@ class HomeController extends Controller
             ->all();
 
         return Inertia::render('Dashboard', [
-            'sponruns'           => $sponruns,
+            'sponruns' => $sponruns,
             'userParticipations' => $userParticipations,
         ]);
     }

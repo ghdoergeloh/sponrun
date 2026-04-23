@@ -18,9 +18,9 @@ class Sponsor extends Model
     protected function casts(): array
     {
         return [
-            'donation_per_lap'   => 'decimal:2',
-            'donation_static_max'=> 'decimal:2',
-            'wants_newsletter'   => 'boolean',
+            'donation_per_lap' => 'decimal:2',
+            'donation_static_max' => 'decimal:2',
+            'wants_newsletter' => 'boolean',
         ];
     }
 
@@ -46,9 +46,9 @@ class Sponsor extends Model
 
     public function calculateDonationSum(int $laps): float
     {
-        $perLap    = (float) $this->donation_per_lap;
+        $perLap = (float) $this->donation_per_lap;
         $staticMax = (float) $this->donation_static_max;
-        $donation  = $perLap * $laps;
+        $donation = $perLap * $laps;
 
         if ($staticMax == 0) {
             return $donation;
@@ -56,6 +56,7 @@ class Sponsor extends Model
         if ($perLap == 0) {
             return $staticMax;
         }
+
         return min($donation, $staticMax);
     }
 }
