@@ -3,6 +3,10 @@ import { useTranslation } from 'react-i18next';
 const LANGUAGES = [
     { code: 'de', label: 'DE' },
     { code: 'en', label: 'EN' },
+    { code: 'fr', label: 'FR' },
+    { code: 'es', label: 'ES' },
+    { code: 'pt', label: 'PT' },
+    { code: 'ru', label: 'RU' },
 ];
 
 export default function LanguageSwitcher({ variant = 'light' }: { variant?: 'light' | 'dark' }) {
@@ -17,7 +21,7 @@ export default function LanguageSwitcher({ variant = 'light' }: { variant?: 'lig
         : 'bg-red-500 text-white border-red-500';
 
     return (
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
             {LANGUAGES.map((lang) => (
                 <button
                     key={lang.code}
