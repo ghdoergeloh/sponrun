@@ -23,34 +23,16 @@ return new class extends Migration
             $table->string('city');
             $table->enum('gender', ['m', 'f']);
             $table->string('password');
-            // Legacy fields kept for schema compatibility with old instances
             $table->boolean('confirmed')->default(false);
             $table->string('confirmation_code')->nullable();
             $table->boolean('wants_newsletter')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
     }
 };
